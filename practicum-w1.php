@@ -1,6 +1,23 @@
 <?php
-    $array1 = [0,1,2,3,4,0,0,3];
-    $array2 = [6,7,2,1];
+
+    $underline = "\033[4m";
+    $reset     = "\033[0m";
+
+    $a1 = (int) readline('How much are the first array? : ');
+    $array1 = [];
+    for ($i=0; $i < $a1; $i++){
+        $array1[] = (int) readline("Enter the number ".($i+1).": ");
+    }
+
+    echo "[". implode(", ", $array1) . "]\n";
+
+    $a2 = (int) readline('How much are the second array? : ');
+    $array2 = [];
+    for ($i=0; $i < $a2; $i++){
+        $array2[] = (int) readline("Enter the number ".($i+1).": ");
+    }
+
+    echo "[". implode(", ", $array2) . "]\n";
 
     $tagged = [];
 
@@ -24,7 +41,7 @@
 
     foreach ($tagged as $item) {
         if ($item['from'] == 1) {
-            $output[] =  "<u>{$item['value']}</u>";
+            $output[] =  "$underline{$item['value']}$reset";
         } else {
             $output[] = "{$item['value']}";
         }
