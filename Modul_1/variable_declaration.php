@@ -12,7 +12,7 @@
 
     // Type conversion
     $age = (int)readline('Your age: ');
-    echo 'Your age is' . (string)$age;
+    echo 'Your age is ' .  (string)$age . "\n";
 
     echo gettype($age); // int
 
