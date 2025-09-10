@@ -444,7 +444,7 @@ if (!$is_new_user && is_numeric($id)) {
         <div class="header">
             <a href="dashboard.php" class="back-to-dashboard">&laquo; Back to Dashboard</a>
             <h1>CIPUTRA UNIVERSITY</h1>
-            <p>The magical side of Ciputra University</p>
+            <p><i>The magical side of Ciputra University</i></p>
         </div>
         
         <div class="profile-content">

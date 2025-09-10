@@ -381,7 +381,7 @@
         <div class="header">
             <a href="profilepage.php?id=new" class="add-student-btn">Add New Student</a>
             <h1>DORM DASHBOARD</h1>
-            <p>Explore our dormitories and their members</p>
+            <p><i>Explore our dormitories and their members</i></p>
         </div>
         
         <div class="navigation">
