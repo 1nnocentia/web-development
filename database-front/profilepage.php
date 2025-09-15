@@ -54,8 +54,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
+
+    // --- 2. DELETE EXISTING USER ---
+    elseif (isset($_POST['delete_profile']) && !$is_new_user) {
+       $photo_to_delete = "";
+       $sql_get_photo = "SELECT foto FROM mahasiswa WHERE id=$id";
+       $photo_result = $conn->query($sql_get_photo);
+       if ($photo_result->num_rows > 0) {
+           $row = $photo_result->fetch_assoc();
+           $photo_to_delete = $row['foto'];
+       }
+
+       $sql_delete = "DELETE FROM mahasiswa WHERE id=$id";
+       if ($conn->query($sql_delete) === TRUE) {
+            if(!empty($photo_to_delete) && file_exists($photo_to_delete)) {
+                unlink($photo_to_delete);
+            }
+        $_SESSION['message'] = "Profile deleted successfully!";
+        $_SESSION['message_type'] = "success";
+        header('Location: dashboard.php');
+        exit();
+       } else {
+        $message = "Error deleting student: " . $conn->error;
+        $message_type = "error";
+       }
+    }
     
-    // --- 2. HANDLE PHOTO UPLOAD ---
+    // --- 3. HANDLE PHOTO UPLOAD ---
     elseif (isset($_FILES['foto']) && !$is_new_user) {
         $target_dir = "uploads/";
         if (!file_exists($target_dir)) {
@@ -437,6 +462,23 @@ if (!$is_new_user && is_numeric($id)) {
                 font-size: 2rem;
             }
         }
+
+        .delete-form-container {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(209, 166, 37, 0.5);
+            text-align: center;
+        }
+
+        .btn.delete-btn {
+            background-color: #9B1B1B;
+            color: white;
+            border: 1px solid #740001;
+        }
+
+        .btn.delete-btn:hover {
+            background-color: #740001;
+        }
     </style>
 </head>
 <body>
@@ -529,9 +571,15 @@ if (!$is_new_user && is_numeric($id)) {
                             <option value="Hufflepuff" <?php if ($asrama == 'Hufflepuff') echo 'selected'; ?>>Hufflepuff</option>
                         </select>
                     </div>
-                    
                     <button type="submit" name="save_profile" class="btn"><?php echo $is_new_user ? 'Create Profile' : 'Update Profile'; ?></button>
                 </form>
+
+                <?php if(!$is_new_user): ?>
+                    <div class="delete-form-container">
+                        <form action="profilepage.php?id=<?php echo $id; ?>" method="post" onsubmit="return confirm('Are you sure you want to permanently delete this user? This action cannot be undone.');">
+                            <button type="submit" name="delete_profile" class="btn delete-btn">Delete Profile</button>
+                        </form>
+                <?php endif; ?>
             </div>
         </div>
         
